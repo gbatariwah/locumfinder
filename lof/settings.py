@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
 from pathlib import Path
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,6 +44,7 @@ INSTALLED_APPS = [
     'martor',
     'core',
     'jobs',
+    'cloudinary'
 ]
 
 MIDDLEWARE = [
@@ -140,3 +144,11 @@ INTERNAL_IPS = [
 ]
 
 AUTH_USER_MODEL = 'core.User'
+
+cloudinary.config(
+    cloud_name="dffd7shak",
+    api_key="396823756461813",
+    api_secret="sUOah5aNmEuukZ5VbAyse_D3KkQ",
+    secure=True,
+    folder="Locum Finder"
+)
