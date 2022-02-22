@@ -29,7 +29,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'lof.apps.LocumFinderConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'theme',
     'django_browser_reload',
     'martor',
-    'jobs'
+    'core',
+    'jobs',
 ]
 
 MIDDLEWARE = [
@@ -137,3 +138,5 @@ TAILWIND_APP_NAME = 'theme'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+AUTH_USER_MODEL = 'core.User'
