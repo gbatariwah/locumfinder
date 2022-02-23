@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <style>
+        #id_type {
+            display: inline-flex;
+        }
+
+        #id_type > div {
+            margin-right: 1rem;
+        }
+
+    </style>
+    <section class="grid md:grid-cols-12 gap-4">
+        <div class="md:col-span-4 py-4 pl-4 pr-4 md:pr-0">
+            <div class="bg-gray-800 p-4 space-y-6 border border-gray-700">
+                <form method="GET" action="/jobs/search" class="flex items-center w-full mb-4">
+                    <input minlength="3" class="input" type="search" name="q" required>
+                    <button type="submit" class="btn btn-secondary">
+                        <i class='bx bxs-search text-xl'></i>
+                    </button>
+                </form>
+                <div>
+                    <p class="flex justify-between mb-4"><span>Filters</span> <a href="#"><i
+                            class='bx bxs-filter-alt text-gray-200'></i></a></p>
+                    <form class="space-y-4">
+                        {#                        <div class="flex space-x-6">#}
+                        {#                            <div class="flex items-center mb-4">#}
+                        {#                                <input id="locum" type="radio" name="type" value="locum"#}
+                        {#                                       class="radio"#}
+                        {#                                       aria-labelledby="locum" aria-describedby="locum"#}
+                        {#                                       checked>#}
+                        {#                                <label for="locum"#}
+                        {#                                       class="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">#}
+                        {#                                    Locum#}
+                        {#                                </label>#}
+                        {#                            </div>#}
+                        {##}
+                        {#                            <div class="flex items-center mb-4">#}
+                        {#                                <input id="locum" type="radio" name="type" value="locum"#}
+                        {#                                       class="radio"#}
+                        {#                                       aria-labelledby="locum" aria-describedby="locum"#}
+                        {#                                       checked>#}
+                        {#                                <label for="locum"#}
+                        {#                                       class="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">#}
+                        {#                                    Permanent#}
+                        {#                                </label>#}
+                        {#                            </div>#}
+                        {#                        </div>#}
+                        {#                        <div>#}
+                        {#                            <label for="">Region</label>#}
+                        {#                            <select id="browsers" name="region">#}
+                        {#                                <option value="Chrome" class="my-2">Northern Region</option>#}
+                        {#                                <option value="Firefox">Upper West Region</option>#}
+                        {#                                <option value="Internet Explorer">#}
+                        {#                                <option value="Opera">#}
+                        {#                                <option value="Safari">#}
+                        {#                                <option value="Microsoft Edge">#}
+                        {#                            </select>#}
+                        {#                        </div>#}
+                        {#                        <div>#}
+                        {#                            <label for="">Order</label>#}
+                        {#                            <select id="browsers" name="order">#}
+                        {#                                <option value="asc" class="my-2">Newest to oldest</option>#}
+                        {#                                <option value="region:desc">Region: A to Z</option>#}
+                        {#                                <option value="region:asc">Region: Z to A</option>#}
+                        {#                            </select>#}
+                        {#                        </div>#}
+                        <div>
+                            <label for="">{{ filter_form.type.label }}</label>
+                            {{ filter_form.type }}
+                            {{ filter_form.type.errors }}
+                        </div>
+                        <div>
+                            <label for="">{{ filter_form.order.label }}</label>
+                            {{ filter_form.order }}
+                        </div>
+
+                        <div>
+                            <label for="">{{ filter_form.region.label }}</label>
+                            {{ filter_form.region }}
+                        </div>
+                        {#                        {{ filter_form.as_p }}#}
+                        <div class="text-center">
+                            <button class="btn btn-primary">Show Results</button>
+                            <a href="#"
+                               class="font-medium text-lg mt-2 text-rose-300 hover:underline block">Clear all</a>
+                        </div>
+                    </form>
+                    <hr class="my-8 border-t-1 border-gray-600">
+                    <div class="bg-gray-700 block">
+                        <img src="{% static 'images/image1.svg' %}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="md:col-span-8">
+            <div class="space-y-4 p-4 md:pl-0 lg:pr-4">
+                {% if page_obj %}
+                    {% for job in page_obj %}
+                        <div class="bg-gray-800 p-4 relative group border border-gray-700">
+                            {% if request.user.is_authenticated and request.user.pk == job.posted_by.pk %}
+                                <a class="hidden hover:scale-110 transition group-hover:block group-hover:flex flex items-center justify-center absolute h-6 w-6 rounded-full bg-green-600 -right-2 -top-2 "
+                                   href="#"><i
+                                        class='bx bx-pencil text-white text-lg'></i></a>
+                            {% endif %}
+                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                <a href="{% url 'job_detail' job.uid %}"
+                                   class="font-semibold hover:underline mr-2">{{ job.title }}</a> <span
+                                    class="text-xs bg-rose-400 border-blue-800">{{ job.type|upper }}</span>
+                            </h5>
+                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ job.description|truncatewords:24 }}
+                                <a class=" bg-blue-400 text-white hover:bg-blue-600"
+                                   href="{% url 'job_detail' job.uid %}">read
+                                    more ➜</a>
+                            </p>
+                            <div class="mt-4 text-sm flex justify-between">
+                                <a href="#" class="flex items-center"><i
+                                        class='bx bxs-user mr-1 text-rose-600'></i>
+                                    <span class="hover:underline">{{ job.posted_by.username }}</span></a>
+
+                                <p class="flex items-center"><i class='bx bxs-calendar mr-1 text-rose-600'></i>
+                                    {{ job.created_at|date:'d/m/Y' }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="text-center">
+                        <span class="font-bold text-rose-600">{{ page_obj.number }}</span> of <span
+                            class="font-bold text-rose-600">{{ page_obj.paginator.num_pages }}</span>
+                    </div>
+                    <div class="mt-4 justify-center flex space-x-12 pb-4">
+                        {% if page_obj.has_previous %}
+                            {% if filters %}
+                                <div>
+                                    <a class="mr-2 border py-1 px-4" href="?type={{ filters.type }}&order={{ filters.order }}&region={{ filters.region }}&page=1">first</a>
+                                    <a class="border border-rose-600 px-4 py-1"
+                                       href="?type={{ filters.type }}&order={{ filters.order }}&region={{ filters.region }}&page={{ page_obj.previous_page_number }}">⇽
+                                        previous</a>
+                                </div>
+                            {% else %}
+                                <div>
+                                    <a class="mr-2 border py-1 px-4" href="?page=1">first</a>
+                                    <a class="border border-rose-600 px-4 py-1"
+                                       href="?page={{ page_obj.previous_page_number }}">⇽
+                                        previous</a>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+
+                        {% if page_obj.has_next %}
+{#                            ?type={{ filters.type }}&order={{ filters.order }}&region={{ filters.region }}&#}
+                            {% if filters %}
+                            <div>
+                                <a class="border border-rose-600 px-4 py-1"
+                                   href="?type={{ filters.type }}&order={{ filters.order }}&region={{ filters.region }}&page={{ page_obj.next_page_number }}">next
+                                    ⇾</a>
+                                <a class="ml-2 border py-1 px-4"
+                                   href="?type={{ filters.type }}&order={{ filters.order }}&region={{ filters.region }}&page={{ page_obj.paginator.num_pages }}">last</a>
+                            </div>
+
+                                {% else %}
+                                  <div>
+                                <a class="border border-rose-600 px-4 py-1"
+                                   href="?page={{ page_obj.next_page_number }}">next
+                                    ⇾</a>
+                                <a class="ml-2 border py-1 px-4"
+                                   href="?page={{ page_obj.paginator.num_pages }}">last</a>
+                            </div>
+                                {% endif %}
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="p-4 bg-gray-900 text-center">
+                        <p>No Job added yet.</p>
+                        <a href="#" class="btn btn-primary">Post a job</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock content %}

@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 from martor.models import MartorField
 from core.models import User
+from uuid import uuid4
 
 JOB_TYPES = (('locum', 'Locum'), ('permanent', 'Permanent'),)
 
@@ -26,7 +27,12 @@ REGIONS = (
      )
 
 
+def generate_uid():
+    return str(uuid4()).split('-')[-1]
+
+
 class Job(models.Model):
+    uid = models.CharField(max_length=12, default=generate_uid)
     title = models.CharField(max_length=255)
     description = MartorField()
     name_of_facility = models.CharField(max_length=255)

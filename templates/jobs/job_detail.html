@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load martortags %}
+{% block content %}
+    <section class="px-4 pt-4 pb-16">
+
+        <div class="grid sm:grid-cols-12 gap-6">
+            <div class="sm:col-span-8">
+                <h2 class="font-bold text-2xl mb-4">{{ job.title }} <span
+                        class="text-sm px-1 bg-rose-600">{{ job.type|upper }}</span></h2>
+                <div class="flex justify-between items-start text-sm">
+                    <div>
+                        <p>
+                            <i class='bx bxs-user'></i>
+                            <span>
+                                    {{ job.posted_by.first_name|title }} {{ job.posted_by.last_name|title }}
+                                </span>
+                        </p>
+                        <p class="text-gray-300">
+                            <i class='bx bxs-calendar'></i>
+                            <span>
+                                {{ job.created_at|date:'N j, Y' }}
+                            </span>
+                        </p>
+                    </div>
+                    <div>
+                        <p>
+                            <i class='bx bx-buildings'></i>
+                            <span>
+                                {{ job.name_of_facility|title }}
+                            </span>
+                        </p>
+                        <p>
+                            <i class='bx bxs-map'></i>
+                            <span class="text-rose-400">
+                                {{ job.name_of_town_or_city|title }}
+                            </span>, {{ job.region|title }} Region
+                        </p>
+
+                    </div>
+                </div>
+                <div class="my-8 prose dark:prose-invert">
+                    {{ job.description| safe_markdown }}
+                </div>
+                {% if request.user == job.posted_by %}
+                    <div class="text-right mb-6">
+                        <a class="btn" href="{% url 'job_update' job.pk %}">
+                            <i class='bx bxs-pencil'></i>
+                            <span>
+                            EDIT
+                        </span>
+                        </a>
+                        <a class="btn btn-primary" href="{% url 'job_delete' job.pk %}">
+                            <i class='bx bxs-trash-alt'></i>
+                            <span>
+                            DELETE
+                        </span>
+                        </a>
+                    </div>
+                {% endif %}
+
+                <div>
+
+
+                    {% if comments %}
+                        <h4 class="text-xl font-bold mb-4">Comments</h4>
+                        <ol class="relative border-l border-gray-200 dark:border-gray-700">
+                            {% for comment in comments %}
+
+                                <li class="mb-10 ml-6">
+                      <span class="flex absolute -left-3 justify-center items-center w-6 h-6 bg-blue-200 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+                     <img class="rounded-full shadow-lg border border-gray-700"
+                          src="{{ comment.user.profile.image.url|default:'https://i.pravatar.cc/300' }}"
+                          alt="">
+                       </span>
+                                    <div class="p-4 bg-gray-800 border border-gray-700 shadow-sm group  dark:border-gray-600 relative">
+                                        {% if request.user == job.posted_by %}
+                                            <form method="POST" action="{% url 'delete_comment' comment.pk %}"
+                                                  class="absolute -right-3 -top-3 hidden group-hover:block">
+                                                {% csrf_token %}
+                                                <button type="submit"
+                                                        class="h-6 w-6 rounded-full bg-rose-600 text-white flex items-center justify-center hover:bg-rose-800">
+                                                    <i class='bx bxs-message-x'></i>
+                                                </button>
+                                            </form>
+                                        {% endif %}
+                                        <div class="justify-between items-center mb-3 flex">
+                                            <div class="text-sm font-semibold ">
+                                            <span class="font-bold">
+                                                {{ comment.user.first_name|title }} {{ comment.user.last_name|title }} •
+                                            </span>
+                                                <span class="hover:underline italic text-gray-300"> {{ comment.user.email }}
+                                            </span>
+                                            </div>
+                                            <p class="mb-1 text-xs font-normal text-gray-300 sm:order-last sm:mb-0">
+                                                {{ comment.created_at|date:'N j, Y' }}
+                                            </p>
+                                        </div>
+                                        <div class="p-3 text-xs font-normal text-gray-500 bg-gray-50 border border-gray-200 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-300 prose">
+                                            {{ comment.message | safe_markdown }}
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ol>
+                    {% endif %}
+                    <form method="POST" action="{% url "add_comment" %}"
+                          class="sm:max-w-sm space-y-4 p-4 bg-gray-800 border border-gray-700">
+                        {% csrf_token %}
+                        <input name="job_id" value="{{ job.pk }}" type="hidden">
+                        <h2 class="font-medium">Leave a comment</h2>
+
+                        <div>
+                            <label for="{{ comment_form.message.id_for_label }}" class="label">{{ comment_form.message.label }} :</label>
+                         {{ comment_form.message }}
+                            <p class="mt-2 text-xs">{{ comment_form.message.help_text }}</p>
+                        </div>
+
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-secondary">SUBMIT</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="sm:col-span-4">
+                <div class="bg-gray-800 p-4 space-y-4 border border-gray-700">
+                    <h3 class="font-bold">Added by:</h3>
+                    <div>
+                        <img class="w-32 h-32 object-cover" src="{{ job.posted_by.profile.image.url }}" alt="user">
+                    </div>
+                    <div class="space-y-4 ">
+                        <a class="block" href="{% url 'profile' job.posted_by.pk %}">
+                            <i class='bx bxs-user'></i>
+                            <span class="font-medium">
+                            {{ job.posted_by.first_name|title }} {{ job.posted_by.last_name|title }}
+                        </span>
+                        </a>
+                        <a href="mailto:{{ job.posted_by.email }}" class="block">
+                            <i class='bx bxs-envelope'></i>
+                            <span>
+                            {{ job.posted_by.email }}
+                        </span>
+                        </a>
+                        <a href="tel:{{ job.posted_by.profile.phone_number }}"
+                           class="bg-green-600 inline-block font-medium px-1">
+                            <i class='bx bxs-phone'></i>
+                            <span>
+                            {{ job.posted_by.profile.phone_number }}
+                        </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
