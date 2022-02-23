@@ -2,6 +2,7 @@
 from django.db import models
 from django.urls import reverse
 from martor.models import MartorField
+from core.models import User
 
 JOB_TYPES = (('locum', 'Locum'), ('permanent', 'Permanent'),)
 
@@ -34,7 +35,7 @@ class Job(models.Model):
     region = models.CharField(max_length=50, choices=REGIONS)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    # posted_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    posted_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
@@ -44,7 +45,7 @@ class Job(models.Model):
 
 
 class Comment(models.Model):
-    # user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     message = MartorField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
