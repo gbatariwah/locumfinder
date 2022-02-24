@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    <style>
+        .wrapper {
+            min-height: 50vh;
+            background-size: cover;
+            background-image: url("https://images.unsplash.com/uploads/141103282695035fa1380/95cdfeef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1130&q=80");
+        }
+
+    </style>
+    <section class="wrapper">
+    </section>
+    <section class="container md:w-3/4 -mt-36 bg-gray-800 border border-gray-700 opacity-90 mx-auto flex flex-col items-center px-4 py-16 text-center md:py-16 md:px-10 lg:px-24 xl:max-w-3xl mb-16">
+            <h1 class="text-4xl font-bold leading-none sm:text-5xl mb-8">Find
+                <span class="dark:text-rose-600">jobs</span> with ease.
+            </h1>
+            <form class="flex items-center w-full mb-4" method="GET" action="/jobs/search">
+                <input type="text" name="q">
+                <button type="submit" class="btn btn-secondary">
+                    <i class='bx bxs-search text-xl' ></i>
+                </button>
+            </form>
+
+        <a class="hover:underline" href="{% url 'job_list' %}">Browse all jobs</a>
+
+
+        </section>
+{% endblock content %}

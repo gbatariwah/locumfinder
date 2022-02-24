@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'martor',
     'core',
     'jobs',
-    'cloudinary'
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -126,6 +126,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+# STATIC_ROOT = 'static'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
@@ -152,3 +153,8 @@ cloudinary.config(
     secure=True,
     folder="Locum Finder"
 )
+
+MARTOR_MARKDOWN_EXTENSIONS = ['markdown.extensions.extra', 'markdown.extensions.nl2br', 'markdown.extensions.smarty',
+                              'markdown.extensions.fenced_code',
+                              # Custom markdown extensions. 'martor.extensions.urlize', 'martor.extensions.del_ins', # strikethrough and ++underscores++ 'martor.extensions.mention', # to parse markdown mention 'martor.extensions.emoji', # to parse markdown emoji 'martor.extensions.mdx_video', # to parse embed/iframe video 'martor.extensions.escape_html', # to handle the XSS vulnerabilities
+                              ]

@@ -73,8 +73,8 @@
                           alt="">
                        </span>
                                     <div class="p-4 bg-gray-800 border border-gray-700 shadow-sm group  dark:border-gray-600 relative">
-                                        {% if request.user == job.posted_by %}
-                                            <form method="POST" action="{% url 'delete_comment' comment.pk %}"
+                                        {% if request.user.id == job.posted_by.id %}
+                                            <form method="POST" action="{% url "delete_comment" job.pk comment.pk %}"
                                                   class="absolute -right-3 -top-3 hidden group-hover:block">
                                                 {% csrf_token %}
                                                 <button type="submit"
@@ -103,15 +103,15 @@
                             {% endfor %}
                         </ol>
                     {% endif %}
-                    <form method="POST" action="{% url "add_comment" %}"
+                    <form method="POST" action="{% url 'add_comment' job.pk %}"
                           class="sm:max-w-sm space-y-4 p-4 bg-gray-800 border border-gray-700">
                         {% csrf_token %}
-                        <input name="job_id" value="{{ job.pk }}" type="hidden">
                         <h2 class="font-medium">Leave a comment</h2>
 
                         <div>
-                            <label for="{{ comment_form.message.id_for_label }}" class="label">{{ comment_form.message.label }} :</label>
-                         {{ comment_form.message }}
+                            <label for="{{ comment_form.message.id_for_label }}"
+                                   class="label">{{ comment_form.message.label }} :</label>
+                            {{ comment_form.message }}
                             <p class="mt-2 text-xs">{{ comment_form.message.help_text }}</p>
                         </div>
 
@@ -125,10 +125,12 @@
                 <div class="bg-gray-800 p-4 space-y-4 border border-gray-700">
                     <h3 class="font-bold">Added by:</h3>
                     <div>
-                        <img class="w-32 h-32 object-cover" src="{{ job.posted_by.profile.image.url }}" alt="user">
+                        <img class="w-32 h-32 object-cover"
+                             src="{{ job.posted_by.profile.profile_picture.url|default:'https://i.pravatar.cc/300' }}"
+                             alt="user">
                     </div>
                     <div class="space-y-4 ">
-                        <a class="block" href="{% url 'profile' job.posted_by.pk %}">
+                        <a class="block" href="#">
                             <i class='bx bxs-user'></i>
                             <span class="font-medium">
                             {{ job.posted_by.first_name|title }} {{ job.posted_by.last_name|title }}

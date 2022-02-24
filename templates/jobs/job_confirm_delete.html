@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="p-4">
+            <div class="max-w-md bg-gray-800 mx-auto border border-gray-700 text-center p-4">
+                <h2 class="mb-4 text-lg">Are you sure you want to delete the post "<strong class="text-rose-600">{{ object.title }}</strong>"?
+            </h2>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Yes please.</button>
+                    <a class="btn" href="{% url 'job_detail' object.pk %}">No, take
+                        me back</a>
+                </div>
+            </form>
+            </div>
+        </section>
+{% endblock content %}

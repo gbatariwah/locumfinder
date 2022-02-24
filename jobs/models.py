@@ -32,7 +32,7 @@ def generate_uid():
 
 
 class Job(models.Model):
-    uid = models.CharField(max_length=12, default=generate_uid)
+    uid = models.CharField(max_length=12, default=generate_uid, primary_key=True)
     title = models.CharField(max_length=255)
     description = MartorField()
     name_of_facility = models.CharField(max_length=255)
