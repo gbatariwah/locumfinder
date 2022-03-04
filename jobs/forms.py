@@ -20,7 +20,7 @@ class CommentForm(forms.Form):
 
 
 class JobForm(forms.ModelForm):
-    description = forms.CharField(max_length=255, widget=forms.Textarea)
+    description = forms.CharField(max_length=1000, widget=forms.Textarea)
 
     class Meta:
         model = Job

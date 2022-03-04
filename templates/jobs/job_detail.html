@@ -69,7 +69,7 @@
                                 <li class="mb-10 ml-6">
                       <span class="flex absolute -left-3 justify-center items-center w-6 h-6 bg-blue-200 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
                      <img class="rounded-full shadow-lg border border-gray-700"
-                          src="{{ comment.user.profile.image.url|default:'https://i.pravatar.cc/300' }}"
+                          src="{{ comment.user.profile_picture.url|default:'https://i.pravatar.cc/300' }}"
                           alt="">
                        </span>
                                     <div class="p-4 bg-gray-800 border border-gray-700 shadow-sm group  dark:border-gray-600 relative">
@@ -126,7 +126,7 @@
                     <h3 class="font-bold">Added by:</h3>
                     <div>
                         <img class="w-32 h-32 object-cover"
-                             src="{{ job.posted_by.profile.profile_picture.url|default:'https://i.pravatar.cc/300' }}"
+                             src="{{ job.posted_by.profile_picture.url|default:'https://i.pravatar.cc/300' }}"
                              alt="user">
                     </div>
                     <div class="space-y-4 ">
@@ -142,11 +142,11 @@
                             {{ job.posted_by.email }}
                         </span>
                         </a>
-                        <a href="tel:{{ job.posted_by.profile.phone_number }}"
+                        <a href="tel:{{ job.posted_by.phone_number }}"
                            class="bg-green-600 inline-block font-medium px-1">
                             <i class='bx bxs-phone'></i>
                             <span>
-                            {{ job.posted_by.profile.phone_number }}
+                            {{ job.posted_by.phone_number }}
                         </span>
                         </a>
                     </div>

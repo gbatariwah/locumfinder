@@ -14,7 +14,7 @@
     <section class="grid md:grid-cols-12 gap-4">
         <div class="md:col-span-4 py-4 pl-4 pr-4 md:pr-0">
             <div class="bg-gray-800 p-4 space-y-6 border border-gray-700">
-                <form method="GET" action="/jobs/search" class="flex items-center w-full mb-4">
+                <form method="GET" action="{% url 'search' %}" class="flex items-center w-full mb-4">
                     <input minlength="3" class="input" type="search" name="q" required>
                     <button type="submit" class="btn btn-secondary">
                         <i class='bx bxs-search text-xl'></i>
@@ -24,48 +24,6 @@
                     <p class="flex justify-between mb-4"><span>Filters</span> <a href="#"><i
                             class='bx bxs-filter-alt text-gray-200'></i></a></p>
                     <form class="space-y-4">
-                        {#                        <div class="flex space-x-6">#}
-                        {#                            <div class="flex items-center mb-4">#}
-                        {#                                <input id="locum" type="radio" name="type" value="locum"#}
-                        {#                                       class="radio"#}
-                        {#                                       aria-labelledby="locum" aria-describedby="locum"#}
-                        {#                                       checked>#}
-                        {#                                <label for="locum"#}
-                        {#                                       class="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">#}
-                        {#                                    Locum#}
-                        {#                                </label>#}
-                        {#                            </div>#}
-                        {##}
-                        {#                            <div class="flex items-center mb-4">#}
-                        {#                                <input id="locum" type="radio" name="type" value="locum"#}
-                        {#                                       class="radio"#}
-                        {#                                       aria-labelledby="locum" aria-describedby="locum"#}
-                        {#                                       checked>#}
-                        {#                                <label for="locum"#}
-                        {#                                       class="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">#}
-                        {#                                    Permanent#}
-                        {#                                </label>#}
-                        {#                            </div>#}
-                        {#                        </div>#}
-                        {#                        <div>#}
-                        {#                            <label for="">Region</label>#}
-                        {#                            <select id="browsers" name="region">#}
-                        {#                                <option value="Chrome" class="my-2">Northern Region</option>#}
-                        {#                                <option value="Firefox">Upper West Region</option>#}
-                        {#                                <option value="Internet Explorer">#}
-                        {#                                <option value="Opera">#}
-                        {#                                <option value="Safari">#}
-                        {#                                <option value="Microsoft Edge">#}
-                        {#                            </select>#}
-                        {#                        </div>#}
-                        {#                        <div>#}
-                        {#                            <label for="">Order</label>#}
-                        {#                            <select id="browsers" name="order">#}
-                        {#                                <option value="asc" class="my-2">Newest to oldest</option>#}
-                        {#                                <option value="region:desc">Region: A to Z</option>#}
-                        {#                                <option value="region:asc">Region: Z to A</option>#}
-                        {#                            </select>#}
-                        {#                        </div>#}
                         <div>
                             <label for="">{{ filter_form.type.label }}</label>
                             {{ filter_form.type }}
@@ -80,7 +38,6 @@
                             <label for="">{{ filter_form.region.label }}</label>
                             {{ filter_form.region }}
                         </div>
-                        {#                        {{ filter_form.as_p }}#}
                         <div class="text-center">
                             <button class="btn btn-primary">Show Results</button>
                             <a href="#"
@@ -101,7 +58,7 @@
                         <div class="bg-gray-800 p-4 relative group border border-gray-700">
                             {% if request.user.is_authenticated and request.user.pk == job.posted_by.pk %}
                                 <a class="hidden hover:scale-110 transition group-hover:block group-hover:flex flex items-center justify-center absolute h-6 w-6 rounded-full bg-green-600 -right-2 -top-2 "
-                                   href="#"><i
+                                   href="{% url 'job_update' job.pk %}"><i
                                         class='bx bx-pencil text-white text-lg'></i></a>
                             {% endif %}
                             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">

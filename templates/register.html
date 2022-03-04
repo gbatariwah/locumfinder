@@ -1,0 +1,71 @@
+{% extends 'auth.html' %}
+
+{% block content %}
+    <form method="POST" class="max-w-[600px] space-y-6">
+        <h2 class="text-4xl font-bold text-center mb-10">
+            <a href="{% url 'home' %}"> LoF<span class="text-4xl">☄</span></a>
+        </h2>
+
+        <h3 class="text-xl font-medium text-gray-900 dark:text-white">Register</h3>
+
+
+        {{ form.errors }}
+        {% csrf_token %}
+        <div>
+            <label for="{{ form.username.id_for_label }}"
+            >{{ form.username.label }}</label>
+            {{ form.username }}
+        </div>
+        <div class="grid sm:grid-cols-2 gap-2">
+            <div>
+                <label for="{{ form.first_name.id_for_label }}"
+                >{{ form.first_name.label }}</label>
+                {{ form.first_name }}
+                <p>{{ form.first_name.help_text }}</p>
+            </div>
+            <div>
+                <label for="{{ form.last_name.id_for_label }}"
+                >{{ form.last_name.label }}</label>
+                {{ form.last_name }}
+            </div>
+        </div>
+
+        <div>
+            <label for="{{ form.email.id_for_label }}"
+            >{{ form.email.label }}</label>
+            {{ form.email }}
+            {{ form.email.errors }}
+        </div>
+        <div>
+            <label for="{{ form.phone_number.id_for_label }}"
+            >{{ form.phone_number.label }}</label>
+            {{ form.phone_number }}
+            {{ form.phone_number.errors }}
+        </div>
+
+        <div>
+            <label for="{{ form.password1.id_for_label }}"
+            >{{ form.password1.label }}</label>
+            {{ form.password1 }}
+            {{ form.password1.errors }}
+        </div>
+
+        <div>
+            <label for="{{ form.password2.id_for_label }}"
+            >{{ form.password2.label }}</label>
+            {{ form.password2 }}
+        </div>
+
+        <div class="my-4">
+            <button type="submit"
+                    class="btn btn-primary w-full">
+                REGISTER
+            </button>
+        </div>
+
+        <div class="text-sm font-medium text-gray-500 dark:text-gray-300 text-center">
+            Already have an account? <a href="{% url 'login' %}"
+                                        class="text-blue-700 hover:underline dark:text-blue-500">Login</a>
+        </div>
+    </form>
+{% endblock content %}

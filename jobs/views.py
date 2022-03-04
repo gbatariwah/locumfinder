@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.contrib import messages
@@ -114,3 +115,15 @@ def delete_comment(request, pk, comment_id):
     comment = Comment.objects.get(pk=comment_id)
     comment.delete()
     return redirect("job_detail", pk)
+
+
+def search(request):
+    q = request.GET.get("q") if request.GET.get("q") else ""
+
+    match = Job.objects.filter(Q(title__icontains=q) | Q(description__icontains=q)).order_by('-created_at')
+    paginator = Paginator(match, 4)
+    page_number = request.GET.get("page")
+
+    page_obj = paginator.get_page(page_number)
+    context = {'page_obj': page_obj, 'query': q, "number_of_hits": paginator.count}
+    return render(request, 'search_results.html', context)

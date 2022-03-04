@@ -17,7 +17,7 @@
             <h1 class="text-4xl font-bold leading-none sm:text-5xl mb-8">Find
                 <span class="dark:text-rose-600">jobs</span> with ease.
             </h1>
-            <form class="flex items-center w-full mb-4" method="GET" action="/jobs/search">
+            <form class="flex items-center w-full mb-4" method="GET" action="{% url 'search' %}">
                 <input type="text" name="q">
                 <button type="submit" class="btn btn-secondary">
                     <i class='bx bxs-search text-xl' ></i>

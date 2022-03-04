@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="p-4">
+            <h1 class="text-2xl font-bold text-rose-600 mb-4">Manage Posts</h1>
+
+         {% if page_obj %}
+        <div class="space-y-4">
+        <div class="grid lg:grid-cols-3 sm:grid-cols-2 gap-4">
+            {% for job in page_obj %}
+
+                <div class="p-6 bg-white border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
+                    <a href="{% url 'job_detail' job.pk %}">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white hover:underline">{{ job.title|truncatewords:8 }}</h5>
+                    </a>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ job.description|truncatewords:20 }}</p>
+                    <a href="{% url 'job_detail' job.pk %}"
+                       class="inline-flex items-center py-1 px-2 text-xs font-medium text-center text-white bg-blue-400 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        READ MORE ➜
+                    </a>
+                <div class="mt-4 text-right">
+                    <a class="btn px-3" href="{% url 'job_update' job.pk %}"><i class='bx bxs-edit-alt'></i></a>
+                    <a class="btn px-3 btn-primary" href="{% url 'job_delete' job.pk %}"><i class='bx bxs-trash-alt' ></i></a>
+                </div>
+                </div>
+
+
+            {% endfor %}
+
+        </div>
+
+         <div class="text-center">
+                <span class="font-bold text-rose-600">{{ page_obj.number }}</span> of <span
+                    class="font-bold text-rose-600">{{ page_obj.paginator.num_pages }}</span>
+            </div>
+            <div class="mt-4 justify-center flex space-x-12">
+                {% if page_obj.has_previous %}
+                    <div>
+                        <a class="mr-2 border py-1 px-4" href="?page=1">first</a>
+                        <a class="border border-rose-600 px-4 py-1" href="?page={{ page_obj.previous_page_number }}">⇽
+                            previous</a>
+                    </div>
+                {% endif %}
+
+                {% if page_obj.has_next %}
+                    <div>
+                        <a class="border border-rose-600 px-4 py-1" href="?page={{ page_obj.next_page_number }}">next
+                            ⇾</a>
+                        <a class="ml-2 border py-1 px-4" href="?page={{ page_obj.paginator.num_pages }}">last</a>
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+    {% else %}
+        <div class="p-4 bg-gray-900 text-center space-y-4">
+            <p>Nothing found.</p>
+        </div>
+    {% endif %}
+    </section>
+
+
+{% endblock content %}
